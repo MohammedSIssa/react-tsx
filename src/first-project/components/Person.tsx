@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Countries } from "../enums/Countries";
+import { Countries, type Country } from "../enums/Countries";
 
 interface Props {
   name: string;
   age: number;
   isMarried: boolean;
-  country: Countries;
+  country: Country;
 }
 
 import useUser from "../hooks/useUser";

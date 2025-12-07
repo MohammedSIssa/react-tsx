@@ -1,12 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-// import App from './App.tsx'
+import { BrowserRouter } from "react-router";
 
-import Tutorial from "./first-project/PedroCourse";
+// import Tutorial from "./first-project/PedroCourse";
+import Second from "./second-project/Second";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Tutorial />
+    <BrowserRouter>
+      <Second />
+    </BrowserRouter>
   </StrictMode>
 );
