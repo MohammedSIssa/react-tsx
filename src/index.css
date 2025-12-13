@@ -1,3 +1,9 @@
+/* The page content font family */
+@import url("https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap");
+
+/* Week counter font family */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
 
 :root {
@@ -10,4 +16,26 @@
 body {
   margin: 0;
   box-sizing: border-box;
+  font-family: "Playpen Sans Arabic", sans-serif;
+}
+
+html,
+* {
+  direction: rtl;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+}
+
+form textarea {
+  resize: none;
+  min-height: 160px;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 80%;
+  font-family: var(--font);
 }
