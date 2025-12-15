@@ -1,0 +1,73 @@
+.animation-wave {
+  animation: wave ease-in-out 800ms forwards;
+  animation-delay: 800ms;
+  transform: scale(0);
+}
+
+.animation-fade-in {
+  animation: fade-in ease-in-out 1s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(0) rotate(-40deg);
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+  }
+  80% {
+    transform: scale(1.02) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.typing {
+  white-space: nowrap;
+  overflow: hidden;
+  border-left: none;
+  width: 0;
+
+  animation:
+    typing 2.5s 2.25s steps(23) forwards,
+    blink 0.7s 2s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 23ch;
+  }
+}
+
+@keyframes blink {
+  0% {
+    border-left: 2px solid;
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+.typing-2 {
+  white-space: nowrap;
+  overflow: hidden;
+  border-left: none;
+  width: 0;
+
+  animation:
+    typing-2 5.5s 2.25s steps(23) forwards,
+    blink 0.7s 5s step-end infinite;
+}

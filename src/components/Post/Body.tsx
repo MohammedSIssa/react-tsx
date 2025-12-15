@@ -5,7 +5,7 @@ export default function PostBody({
   showAllText = false,
 }: {
   body: string;
-  showAllText: boolean;
+  showAllText?: boolean;
 }) {
   const [showMore, setShowMore] = useState(body?.length < 60);
 

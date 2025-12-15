@@ -13,50 +13,64 @@ import { LuLogs } from "react-icons/lu";
 
 import LogOutButton from "./LogOutButton";
 
-import {
-  isAdmin,
-  isMonmon,
-  isNotLoggedIn,
-  isLoggedIn,
-} from "../variables/globals";
-
 export default function NavBar() {
   console.log(import.meta.env);
-  const { user } = useAuth();
+  const { isAdmin, isMonmon, isLoggedIn, isNotLoggedIn } = useAuth();
   return (
-    <div className="fixed bottom-2 left-1/2 z-50 flex h-fit w-[95%] -translate-x-1/2 items-center justify-center gap-5 rounded-xl border border-white/20 bg-white/10 p-4 px-6 py-4 text-yellow-300 shadow-lg shadow-black/10 backdrop-blur-xl md:top-0 md:right-0 md:m-4 md:w-fit md:translate-x-0">
-      <NavLink to={"/"}>
+    <div className="fixed bottom-2 left-1/2 z-50 flex h-fit w-[95%] -translate-x-1/2 items-center justify-center gap-5 rounded-xl border-2 border-white/20 bg-white/10 p-4 px-6 py-4 text-yellow-300 shadow-lg shadow-black/10 backdrop-blur-xl md:top-0 md:right-0 md:m-4 md:w-fit md:translate-x-0">
+      <NavLink
+        to={"/"}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <FaHome size={30} />
       </NavLink>
-      <NavLink to={"/weeks"}>
+      <NavLink
+        to={"/week/1"}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <BsCalendar2MinusFill size={24} />
       </NavLink>
-      <NavLink to={"/goals"}>
+      <NavLink
+        to={"/goal/1"}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <TbTargetArrow size={28} />
       </NavLink>
-      <NavLink to={"/stats"}>
+      <NavLink
+        to={"/stats/1"}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <IoStatsChart size={25} />
       </NavLink>
       {/* <NavLink to={"/blogs"}>
-        <HiMiniPencilSquare size={27} />
+        <HiMiniPencilSquare size={27} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
       </NavLink> */}
-      {isNotLoggedIn(user?.username ?? null) && (
-        <NavLink to={"/login"} state={{ path: location.pathname }}>
+      {isNotLoggedIn() && (
+        <NavLink
+          to={"/login"}
+          state={{ path: location.pathname }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <FiLogIn size={28} />
         </NavLink>
       )}
-      {(isAdmin(user?.role ?? 0, user?.apikey ?? "") ||
-        isMonmon(user?.role ?? 0, user?.apikey ?? "")) && (
-        <NavLink to={"/special"}>
+      {(isAdmin() || isMonmon()) && (
+        <NavLink
+          to={"/special/"}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <FaLock size={25} />
         </NavLink>
       )}
-      {isAdmin(user?.role ?? 0, user?.apikey ?? "") && (
-        <NavLink to={"/admin/logs"}>
+      {isAdmin() && (
+        <NavLink
+          to={"/logs"}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <LuLogs size={28} />
         </NavLink>
       )}
-      {isLoggedIn(user?.username ?? null) && (
+      {isLoggedIn() && (
         <LogOutButton>
           <MdLogout size={28} />
         </LogOutButton>

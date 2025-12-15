@@ -4,6 +4,7 @@
 /* Week counter font family */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
+@import url("./animation.css");
 @import "tailwindcss";
 
 :root {
@@ -38,4 +39,83 @@ pre {
   word-wrap: break-word;
   max-width: 80%;
   font-family: var(--font);
+}
+
+.stories a.active {
+  transition: all 200ms;
+  position: relative;
+  transform: scale(1.025);
+}
+
+.stories a.active::before {
+  position: absolute;
+  content: "👀";
+  top: 3px;
+  left: 3px;
+}
+
+.counter {
+  font-family: Montserrat, sans-serif;
+}
+
+.post img {
+  max-height: calc(100dvh - 200px);
+}
+
+.stories::-webkit-scrollbar {
+  width: 5px;
+}
+
+.year {
+  font-family: Montserrat, sans-serif;
+  transform: skewX(-5deg);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 200, 200, 0.3);
+  border-radius: 14px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.25);
+}
+::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+}
+iframe {
+  pointer-events: none;
+  cursor: none;
+  width: 720px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+iframe.shorts {
+  aspect-ratio: 9 / 16 !important;
+  height: calc(100dvh - 200px);
+  width: auto !important;
+}
+
+table {
+  border-collapse: collapse;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  max-width: 100%;
+}
+
+td,
+th {
+  padding: 10px 20px;
+}
+
+td {
+  text-align: center;
 }
