@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import type { Story } from "../types/Story";
 import type { Post } from "../types/Post";
 import LoadingPosts from "../components/Loaders/LoadingPosts";
+import Land from "./Land";
 
 export default function Content() {
   const [stories, setStories] = useState<Story[] | null>(null);
@@ -17,6 +18,8 @@ export default function Content() {
   const [postsError, setPostsError] = useState(false);
 
   const { type, storyid } = useParams();
+
+  console.log({ type, storyid });
 
   useEffect(() => {
     async function getStories() {
@@ -58,17 +61,20 @@ export default function Content() {
         setLoadingPosts(false);
       }
     }
-    getPosts();
+    if (storyid !== undefined) getPosts();
   }, [type, storyid]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 md:flex-row">
-      {loadingStories && <h1>Loading stories..</h1>}
-      {storiesError && <h1>Error loading stories..</h1>}
+      {loadingStories && <h1></h1>}
+      {storiesError && <h1></h1>}
       {!loadingStories && <Stories stories={stories ?? []} />}
-      {loadingPosts && <LoadingPosts />}
-      {postsError && <h1>Error loading posts..</h1>}
-      {!loadingPosts && <Posts posts={posts ?? []} />}
+      {loadingPosts && storyid !== undefined && <LoadingPosts />}
+      {storyid === undefined && (
+        <Land type={stories !== null ? stories[0].type : undefined} />
+      )}
+      {postsError && <h1></h1>}
+      {!loadingPosts && storyid !== undefined && <Posts posts={posts ?? []} />}
     </div>
   );
 }

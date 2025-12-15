@@ -1,6 +1,7 @@
 import type { Log } from "../../types/Log";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import LoadingLogs from "../../components/Loaders/LoadingLogs";
 
 export default function Logs() {
   const [data, setData] = useState<Log[] | null>(null);
@@ -41,7 +42,7 @@ export default function Logs() {
   }, [user?.apikey]);
 
   if (error) return <h1>Error loading logs</h1>;
-  if (loading) return <h1>Loading logs</h1>;
+  if (loading) return <LoadingLogs />;
   if (data)
     return (
       <div className="flex items-center justify-center pb-20">

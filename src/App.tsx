@@ -31,6 +31,7 @@ export default function App() {
             </Route>
 
             {/* Public Routes */}
+            <Route path=":type" element={<Content />} />
             <Route path=":type/:storyid" element={<Content />} />
 
             {/* Secret Routes */}

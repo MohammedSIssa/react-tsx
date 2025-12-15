@@ -25,19 +25,19 @@ export default function NavBar() {
         <FaHome size={30} />
       </NavLink>
       <NavLink
-        to={"/week/1"}
+        to={"/week"}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <BsCalendar2MinusFill size={24} />
       </NavLink>
       <NavLink
-        to={"/goal/1"}
+        to={"/goal"}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <TbTargetArrow size={28} />
       </NavLink>
       <NavLink
-        to={"/stats/1"}
+        to={"/stat"}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <IoStatsChart size={25} />
