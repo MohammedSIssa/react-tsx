@@ -18,6 +18,8 @@ export default function Logs() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const [totalCost, setTotalCost] = useState(0);
+
   function deleteEffect(id: number) {
     setData((d) => (d ? d.filter((i) => i.id !== id) : null));
   }
@@ -30,6 +32,13 @@ export default function Logs() {
         if (res.ok) {
           const logs = await res.json();
           setData(logs);
+          const costs = logs.map((log: Log) => log.total_cost);
+          const sum = costs.reduce(
+            (accumulator: number, currentValue: number) =>
+              accumulator + currentValue,
+            0,
+          );
+          setTotalCost(sum);
         }
       } catch {
         setError(true);
@@ -102,6 +111,24 @@ export default function Logs() {
               </td>
             </tr>
           ))}
+          <tr>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td className="border-0"></td>
+            <td>{totalCost}</td>
+            <td className="border-0"></td>
+          </tr>
         </tbody>
       </table>
     );
