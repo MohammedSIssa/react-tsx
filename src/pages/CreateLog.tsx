@@ -25,7 +25,14 @@ export default function CreateLog() {
 
   const [logsData, setLogsData] = useState<Log | null>({});
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    // Format as YYYY-MM-DD for input type="date"
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const dd = String(today.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  });
   const [orderNum, setOrderNum] = useState("");
   const [unit, setUnit] = useState("");
   const [qty, setQty] = useState("");
