@@ -16,10 +16,6 @@ export default function CreateLog() {
   const [allTypes, setAllTypes] = useState<string[]>([]);
   const [selectRepairType, setSelectRepairType] = useState("");
 
-  // const [terms, setTerms] = useState<string[]>([]);
-  // const [loadingTerms, setLoadingTerms] = useState(true);
-  // const [selectTerm, setSelectTerm] = useState("");
-
   const [termNames, setTermNames] = useState<string[]>([]);
   const [loadingTermNames, setLoadingTermNames] = useState(true);
   const [selectTermName, setSelectTermName] = useState("");
@@ -50,6 +46,7 @@ export default function CreateLog() {
       try {
         setError(false);
         setSubmitting(true);
+        setFeedback("جار اضافة سجل..");
         const res = await fetch(`${API}/logs`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -216,6 +213,7 @@ export default function CreateLog() {
           <div className="flex flex-col gap-2">
             <label>التاريخ</label>
             <input
+              disabled={submitting}
               required
               type="date"
               value={date}
@@ -227,7 +225,7 @@ export default function CreateLog() {
             <Listbox
               value={selectVCode}
               onChange={setSelectVCode}
-              disabled={loadingVCodes}
+              disabled={loadingVCodes || submitting}
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
@@ -257,13 +255,14 @@ export default function CreateLog() {
             <input
               value={orderNum}
               onChange={(e) => setOrderNum(e.target.value)}
+              disabled={submitting}
             />
           </div>
 
           <div className="flex flex-col gap-2">
             <label>نوع الصيانة</label>
             <select
-              disabled={loadingTypesAr}
+              disabled={loadingTypesAr || submitting}
               value={selectRepairType}
               onChange={(e) => {
                 setSelectRepairType(e.target.value);
@@ -282,7 +281,7 @@ export default function CreateLog() {
             <Listbox
               value={selectTermName}
               onChange={setSelectTermName}
-              disabled={loadingTermNames}
+              disabled={loadingTermNames || submitting}
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
@@ -310,7 +309,11 @@ export default function CreateLog() {
             </Listbox>
 
             <label>الوحدة</label>
-            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+            <select
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+              disabled={submitting}
+            >
               <option value={""}>--اختر--</option>
               <option value={"لتر"}>لتر</option>
               <option value={"كغم"}>كغم</option>
@@ -323,17 +326,20 @@ export default function CreateLog() {
             <label>كمية التوريد</label>
             <input
               type="number"
+              disabled={submitting}
               value={qty}
               onChange={(e) => setQty(e.target.value)}
             />
             <label>تكلفة الوحدة</label>
             <input
+              disabled={submitting}
               type="number"
               value={unitCost}
               onChange={(e) => setUnitCost(e.target.value)}
             />
             <label>تكلفة الصيانة</label>
             <input
+              disabled={submitting}
               type="number"
               value={cost}
               onChange={(e) => setCost(e.target.value)}
@@ -343,6 +349,7 @@ export default function CreateLog() {
         <div className="flex flex-col gap-2 md:max-w-[400px]">
           <label>ملاحظات:</label>
           <textarea
+            disabled={submitting}
             value={notes ?? ""}
             className="resize-none"
             onChange={(e) =>
@@ -353,6 +360,7 @@ export default function CreateLog() {
 
         <button
           type="submit"
+          disabled={submitting}
           className="mt-5 rounded bg-blue-500 p-2 font-bold text-white"
         >
           إضافة السجل
