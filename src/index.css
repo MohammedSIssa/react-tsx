@@ -1,10 +1,4 @@
-/* The page content font family */
-@import url("https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap");
-
-/* Week counter font family */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-
-@import url("./animation.css");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -14,108 +8,44 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Playpen Sans Arabic", sans-serif;
-}
-
-html,
-* {
+html {
   direction: rtl;
-}
-
-[dir="ltr"] {
-  direction: ltr;
-}
-
-form textarea {
-  resize: none;
-  min-height: 160px;
-}
-
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-width: 80%;
-  font-family: var(--font);
-}
-
-.stories a.active {
-  transition: all 200ms;
-  position: relative;
-  transform: scale(1.025);
-}
-
-.stories a.active::before {
-  position: absolute;
-  content: "👀";
-  top: 3px;
-  left: 3px;
-}
-
-.counter {
-  font-family: Montserrat, sans-serif;
-}
-
-.post img {
-  max-height: calc(100dvh - 200px);
-}
-
-.stories::-webkit-scrollbar {
-  width: 5px;
-}
-
-.year {
-  font-family: Montserrat, sans-serif;
-  transform: skewX(-5deg);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(200, 200, 200, 0.3);
-  border-radius: 14px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  filter: brightness(1.25);
-}
-::-webkit-scrollbar-corner {
-  background: #f1f1f1;
-}
-iframe {
-  pointer-events: none;
-  cursor: none;
-  width: 720px;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-}
-
-iframe.shorts {
-  aspect-ratio: 9 / 16 !important;
-  height: calc(100dvh - 200px);
-  width: auto !important;
+  font-family: Rubik, sans-serif;
 }
 
 table {
   border-collapse: collapse;
   letter-spacing: 1px;
   font-size: 0.8rem;
-  max-width: 100%;
+  max-width: 100% !important;
+  direction: rtl;
 }
 
-td,
+td:not(.border-0),
 th {
-  padding: 10px 20px;
+  border: 1px solid black;
+  padding: 2px 5px;
 }
 
 td {
   text-align: center;
+}
+
+@media print {
+  .hide-when-print {
+    display: none;
+  }
+}
+
+.loading-spinner {
+  animation: spin 1s steps(8, end) infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
