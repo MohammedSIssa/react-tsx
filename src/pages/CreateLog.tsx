@@ -22,7 +22,6 @@ export default function CreateLog() {
 
   const [vehicleData, setVehicleData] = useState<Vehicle | null>(null);
   const [termsData, setTermsData] = useState<Term | null>(null);
-
   const [logsData, setLogsData] = useState<Log | null>({});
 
   const [date, setDate] = useState(() => {
