@@ -49,3 +49,12 @@ td {
     transform: rotate(360deg);
   }
 }
+
+::-webkit-scrollbar {
+  background-color: white;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
