@@ -16,9 +16,13 @@ export default function CreateLog() {
   const [allTypes, setAllTypes] = useState<string[]>([]);
   const [selectRepairType, setSelectRepairType] = useState("");
 
-  const [terms, setTerms] = useState<string[]>([]);
-  const [loadingTerms, setLoadingTerms] = useState(true);
-  const [selectTerm, setSelectTerm] = useState("");
+  // const [terms, setTerms] = useState<string[]>([]);
+  // const [loadingTerms, setLoadingTerms] = useState(true);
+  // const [selectTerm, setSelectTerm] = useState("");
+
+  const [termNames, setTermNames] = useState<string[]>([]);
+  const [loadingTermNames, setLoadingTermNames] = useState(true);
+  const [selectTermName, setSelectTermName] = useState("");
 
   const [vehicleData, setVehicleData] = useState<Vehicle | null>(null);
   const [termsData, setTermsData] = useState<Term | null>(null);
@@ -44,7 +48,8 @@ export default function CreateLog() {
     e.preventDefault();
     // console.log(logsData);
 
-    if (selectTerm !== "" && selectVCode !== "") {
+    // if (selectTerm !== "" && selectVCode !== "") {
+    if (selectTermName !== "" && selectVCode !== "") {
       try {
         setError(false);
         setSubmitting(true);
@@ -131,12 +136,12 @@ export default function CreateLog() {
 
         if (res.ok) {
           const termss = await res.json();
-          setTerms(termss);
+          setTermNames(termss);
         }
       } catch {
         console.error("ERror");
       } finally {
-        setLoadingTerms(false);
+        setLoadingTermNames(false);
       }
     }
     if (selectRepairType.trim() !== "") {
@@ -146,9 +151,9 @@ export default function CreateLog() {
 
   // On terms change, update repair description
   useEffect(() => {
-    async function getDataByTermNumber() {
+    async function getDataByTermName() {
       try {
-        const res = await fetch(`${API}/terms/term/${selectTerm}`);
+        const res = await fetch(`${API}/terms/name/${selectTermName}`);
         if (res.ok) {
           const d = await res.json();
           setTermsData(d);
@@ -163,8 +168,8 @@ export default function CreateLog() {
         console.error("Error");
       }
     }
-    if (selectTerm !== "") getDataByTermNumber();
-  }, [selectTerm]);
+    if (selectTermName !== "") getDataByTermName();
+  }, [selectTermName]);
 
   // On vehicle code change, update all vehicle data
   useEffect(() => {
@@ -272,22 +277,22 @@ export default function CreateLog() {
               ))}
             </select>
 
-            <label>البند</label>
+            <label>اسم البند</label>
 
             <Listbox
-              value={selectTerm}
-              onChange={setSelectTerm}
-              disabled={loadingTerms}
+              value={selectTermName}
+              onChange={setSelectTermName}
+              disabled={loadingTermNames}
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
                 <Listbox.Button className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
-                  {selectTerm || "-- اختر البند --"}
+                  {selectTermName || "-- اختر البند --"}
                 </Listbox.Button>
 
                 {/* Options */}
                 <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
-                  {terms.map((term, idx) => (
+                  {termNames.map((term, idx) => (
                     <Listbox.Option
                       key={idx}
                       value={term}
