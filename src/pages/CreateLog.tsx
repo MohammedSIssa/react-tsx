@@ -130,7 +130,8 @@ export default function CreateLog() {
     async function getDataByRepairType() {
       try {
         const res = await fetch(`${API}/terms/type/${selectRepairType}`);
-
+        setTermNames([]);
+        setSelectTermName("");
         if (res.ok) {
           const termss = await res.json();
           setTermNames(termss);
@@ -150,7 +151,8 @@ export default function CreateLog() {
   useEffect(() => {
     async function getDataByTermName() {
       try {
-        const res = await fetch(`${API}/terms/name/${selectTermName}`);
+        setTermsData(null);
+        const res = await fetch(`${API}/terms/name?search=${selectTermName}`);
         if (res.ok) {
           const d = await res.json();
           setTermsData(d);
@@ -172,6 +174,7 @@ export default function CreateLog() {
   useEffect(() => {
     async function getVehicleDataByVCode() {
       try {
+        setVehicleData(null);
         const res = await fetch(`${API}/vehicles/vcode/${selectVCode}`);
         if (res.ok) {
           const d = await res.json();
