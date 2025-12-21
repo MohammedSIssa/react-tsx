@@ -46,9 +46,6 @@ export default function CreateLog() {
   // Create log function
   async function create(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // console.log(logsData);
-
-    // if (selectTerm !== "" && selectVCode !== "") {
     if (selectTermName !== "" && selectVCode !== "") {
       try {
         setError(false);
@@ -62,7 +59,7 @@ export default function CreateLog() {
         if (res.ok) {
           console.log("added");
           setFeedback("تمت اضافة السجل بنجاح");
-          // setLogsData({});
+          setLogsData({});
         }
       } catch {
         console.error("failed to add log");
