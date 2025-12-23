@@ -4,8 +4,10 @@ export type Log = {
   order_num?: string | null;
   vehicle_code?: number | null;
   vehicle_type_ar?: string | null;
+  vehicle_type_en?: string | null;
   licence_number?: number | null;
   vehicle_model_en?: string | null;
+  vehicle_model_ar?: string | null;
   term_num?: string | null;
   repair_desc_ar?: string | null;
   repair_desc_en?: string | null;

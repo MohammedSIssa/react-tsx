@@ -12,15 +12,19 @@ const Vehicles = lazy(() => import("./pages/Vehicles"));
 const CreateTerm = lazy(() => import("./pages/CreateTerm"));
 const EditTerm = lazy(() => import("./pages/EditTerm"));
 const Terms = lazy(() => import("./pages/Terms"));
+const Settings = lazy(() => import("./pages/SettingsPage"));
 
 import NavBar from "./components/NavBar";
 
+import LanguageProvider from "./context/LanguageProvider";
+
 export default function App() {
   return (
-    <>
+    <LanguageProvider>
       <NavBar />
       <Routes>
         <Route path="/" index element={<Logs />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/create/vehicle" element={<CreateVehicle />} />
         <Route path="/edit/vehicle" element={<EditVehicle />} />
         <Route path="/vehicles" element={<Vehicles />} />
@@ -30,6 +34,6 @@ export default function App() {
         <Route path="/create/log" element={<CreateLog />} />
         <Route path="/edit/log" element={<EditLog />} />
       </Routes>
-    </>
+    </LanguageProvider>
   );
 }

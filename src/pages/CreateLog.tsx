@@ -3,6 +3,8 @@ import { API } from "../variables/globals";
 import type { Term } from "../types/Term";
 import type { Vehicle } from "../types/Vehicle";
 
+import useLanguage from "../hooks/useLanguage";
+
 import { formatDateDDMMYYYY } from "../utils/formatData";
 import { Listbox } from "@headlessui/react";
 import type { Log } from "../types/Log";
@@ -44,6 +46,8 @@ export default function CreateLog() {
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState(false);
 
+  const { language } = useLanguage();
+
   // Create log function
   async function create(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -51,7 +55,9 @@ export default function CreateLog() {
       try {
         setError(false);
         setSubmitting(true);
-        setFeedback("جار اضافة سجل..");
+        setFeedback(
+          language === "english" ? "Adding log..." : "جار اضافة سجل..",
+        );
         const res = await fetch(`${API}/logs`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -60,7 +66,11 @@ export default function CreateLog() {
 
         if (res.ok) {
           console.log("added");
-          setFeedback("تمت اضافة السجل بنجاح");
+          setFeedback(
+            language === "english"
+              ? "Added log successfully"
+              : "تمت اضافة السجل بنجاح",
+          );
           setLogsData({});
         }
       } catch {
@@ -216,6 +226,12 @@ export default function CreateLog() {
       >
         <div className="flex flex-wrap items-end gap-2">
           <div className="flex flex-col gap-2">
+            <label>رقم الطلب</label>
+            <input
+              value={orderNum}
+              onChange={(e) => setOrderNum(e.target.value)}
+              disabled={submitting}
+            />
             <label>التاريخ</label>
             <input
               disabled={submitting}
@@ -255,13 +271,6 @@ export default function CreateLog() {
                 </Listbox.Options>
               </div>
             </Listbox>
-
-            <label>رقم الطلب</label>
-            <input
-              value={orderNum}
-              onChange={(e) => setOrderNum(e.target.value)}
-              disabled={submitting}
-            />
           </div>
 
           <div className="flex flex-col gap-2">
@@ -281,7 +290,7 @@ export default function CreateLog() {
               ))}
             </select>
 
-            <label>اسم البند</label>
+            <label>بند الصيانة</label>
 
             <Listbox
               value={selectTermName}
@@ -395,7 +404,7 @@ export default function CreateLog() {
               <th>رقم اللوحة</th>
               <th>سنة الإنتاج</th>
               <th>كود الصيانة</th>
-              <th>البتد</th>
+              <th>البند</th>
               <th>Description</th>
               <th>البيان</th>
               <th>الوحدة</th>

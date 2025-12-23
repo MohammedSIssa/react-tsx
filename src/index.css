@@ -58,3 +58,18 @@ td {
 ::-webkit-scrollbar-thumb {
   background-color: #888;
 }
+
+.real-date.hide {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.real-date.show {
+  position: relative;
+  opacity: 1;
+}
+
+.fake-date {
+  cursor: pointer;
+}

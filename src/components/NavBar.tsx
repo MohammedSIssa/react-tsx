@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { FaPrint } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 
 export default function NavBar() {
   return (
@@ -38,10 +39,18 @@ export default function NavBar() {
         </NavLink>
       </div>
 
-      <div className="flex gap-6 [&_.active]:border-b-2 [&_.active]:font-bold">
+      <div className="flex items-center gap-6 [&_.active]:border-b-2 [&_.active]:font-bold">
         <NavLink to="/terms">بنود الصيانة</NavLink>
         <NavLink to="/vehicles">بيانات الآليات</NavLink>
         <NavLink to="/">سجل الصيانة</NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "rounded bg-violet-200 p-2" : "p-2"
+          }
+          to="/settings"
+        >
+          <FaGear />
+        </NavLink>
       </div>
     </div>
   );

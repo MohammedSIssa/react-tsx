@@ -8,10 +8,14 @@ import ErrorPage from "./ErrorPage";
 import { MdEdit } from "react-icons/md";
 import DeleteButton from "../components/DeleteButton";
 
+import useLanguage from "../hooks/useLanguage";
+
 export default function Terms() {
   const [data, setData] = useState<Term[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const { language } = useLanguage();
 
   function deleteEffect(id: number | string) {
     setData((d) => (d ? d.filter((i) => i.id !== id) : null));
@@ -43,27 +47,48 @@ export default function Terms() {
         <thead>
           <tr className="[&_th]:font-bold">
             <th>{"#"}</th>
-            <th>نوع الصيانة</th>
-            <th>نوع الصيانة - انجليزي</th>
-            <th>وصف الصيانة</th>
-            <th>وصف الصيانة - انجليزي</th>
-            <th>الوحدة</th>
-            <th>الكمية</th>
-            <th>التكلفة {"($)"}</th>
+            {language === "english" ? (
+              <>
+                <th>Repair Type</th>
+                <th>Repair Description</th>
+                <th>Unit</th>
+                <th>Quantity</th>
+                <th dir="ltr">Cost {"($)"}</th>
+              </>
+            ) : (
+              <>
+                <th>نوع الصيانة</th>
+                <th>وصف الصيانة</th>
+                <th>الوحدة</th>
+                <th>الكمية</th>
+                <th>التكلفة {"($)"}</th>
+              </>
+            )}
             <th className="hide-when-print">اجراءات</th>
           </tr>
         </thead>
         <tbody>
           {data.map((term, idx) => (
             <tr key={idx}>
-              <td>{term.term_num}</td>
-              <td>{term.repair_type_ar}</td>
-              <td>{term.repair_type_en}</td>
-              <td>{term.repair_desc_ar}</td>
-              <td>{term.repair_desc_en}</td>
-              <td>{term.uom}</td>
-              <td>{term.qty}</td>
+              {language === "english" ? (
+                <>
+                  <td>{term.term_num}</td>
+                  <td>{term.repair_type_en}</td>
+                  <td>{term.repair_desc_en}</td>
+                  <td>{term.uom}</td>
+                  <td>{term.qty}</td>
+                </>
+              ) : (
+                <>
+                  <td>{term.term_num}</td>
+                  <td>{term.repair_type_ar}</td>
+                  <td>{term.repair_desc_ar}</td>
+                  <td>{term.uom}</td>
+                  <td>{term.qty}</td>
+                </>
+              )}
               <td>{term.service_cost}</td>
+
               <td className="hide-when-print flex gap-1 border-0 border-l p-1">
                 <NavLink
                   to={`/edit/term`}
