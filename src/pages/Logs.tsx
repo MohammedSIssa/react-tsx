@@ -165,7 +165,6 @@ export default function Logs() {
             <td className="border-0"></td>
             <td className="border-0"></td>
             <td className="border-0"></td>
-            <td className="border-0"></td>
             <td>{totalCost}</td>
             <td className="border-0"></td>
           </tr>

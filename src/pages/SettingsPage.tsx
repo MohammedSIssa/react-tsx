@@ -19,7 +19,6 @@ export default function SettingsPage() {
     <div className="flex items-center justify-center">
       <form
         className="flex flex-col gap-2 [&_select]:bg-neutral-300 [&_select]:p-2"
-        dir={selectedLang === "english" ? "ltr" : "rtl"}
         onSubmit={saveSettings}
       >
         {selectedLang === "english" ? (
@@ -30,7 +29,10 @@ export default function SettingsPage() {
 
         <select
           value={selectedLang}
-          onChange={(e) => setSelectedLang(e.target.value)}
+          onChange={(e) => {
+            setSelectedLang(e.target.value);
+            setFeedback("");
+          }}
         >
           <option value={"arabic"}>عربي</option>
           <option value={"english"}>English</option>
