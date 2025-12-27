@@ -35,6 +35,13 @@ td {
   .hide-when-print {
     display: none;
   }
+  th button,
+  td button {
+    display: none;
+  }
+  /* td {
+    font-size: 8px;
+  } */
 }
 
 .loading-spinner {

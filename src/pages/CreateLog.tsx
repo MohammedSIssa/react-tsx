@@ -6,7 +6,12 @@ import type { Vehicle } from "../types/Vehicle";
 import useLanguage from "../hooks/useLanguage";
 
 import { formatDateDDMMYYYY } from "../utils/formatData";
-import { Listbox } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from "@headlessui/react";
 import type { Log } from "../types/Log";
 
 export default function CreateLog() {
@@ -189,12 +194,13 @@ export default function CreateLog() {
         setVehicleData(null);
         const res = await fetch(`${API}/vehicles/vcode/${selectVCode}`);
         if (res.ok) {
-          const d = await res.json();
+          const d: Vehicle = await res.json();
           setVehicleData(d);
           setLogsData((prev) => ({
             ...prev,
             licence_number: d.licence_number,
             vehicle_code: d.vehicle_code,
+            vehicle_model_ar: d.vehicle_model_ar,
             vehicle_model_en: d.vehicle_model_en,
             vehicle_type_ar: d.vehicle_type_ar,
           }));
@@ -250,15 +256,15 @@ export default function CreateLog() {
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
-                <Listbox.Button className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
+                <ListboxButton className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
                   {selectVCode || "-- اختر --"}
-                </Listbox.Button>
+                </ListboxButton>
 
                 {/* Options */}
-                <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
+                <ListboxOptions className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
                   {!loadingVCodes &&
                     vcodes.map((code, idx) => (
-                      <Listbox.Option
+                      <ListboxOption
                         key={idx}
                         value={code}
                         className={({ active, selected }) =>
@@ -266,9 +272,9 @@ export default function CreateLog() {
                         }
                       >
                         {code}
-                      </Listbox.Option>
+                      </ListboxOption>
                     ))}
-                </Listbox.Options>
+                </ListboxOptions>
               </div>
             </Listbox>
           </div>
@@ -299,14 +305,14 @@ export default function CreateLog() {
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
-                <Listbox.Button className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
+                <ListboxButton className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
                   {selectTermName || "-- اختر البند --"}
-                </Listbox.Button>
+                </ListboxButton>
 
                 {/* Options */}
-                <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
+                <ListboxOptions className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
                   {termNames.map((term, idx) => (
-                    <Listbox.Option
+                    <ListboxOption
                       key={idx}
                       value={term}
                       className={({ active }) =>
@@ -316,9 +322,9 @@ export default function CreateLog() {
                       }
                     >
                       {term}
-                    </Listbox.Option>
+                    </ListboxOption>
                   ))}
-                </Listbox.Options>
+                </ListboxOptions>
               </div>
             </Listbox>
 
@@ -397,44 +403,92 @@ export default function CreateLog() {
         <table>
           <thead>
             <tr className="[&_th]:font-bold">
-              <th>التاريخ</th>
-              <th>رقم الطلب</th>
-              <th>كود المركبة</th>
-              <th>نوع المركبة</th>
-              <th>رقم اللوحة</th>
-              <th>سنة الإنتاج</th>
-              <th>كود الصيانة</th>
-              <th>البند</th>
-              <th>Description</th>
-              <th>البيان</th>
-              <th>الوحدة</th>
-              <th>كمية التوريد</th>
-              <th>تكلفة الوحدة</th>
-              <th>تكلفة الصيانة</th>
-              <th>إجمالي المبلغ</th>
+              {language === "english" ? (
+                <>
+                  <th>Date</th>
+                  <th>Order Number</th>
+                  <th>Vehicle Code</th>
+                  <th>Vehicle Type</th>
+                  <th>Licence Number</th>
+                  <th>Model</th>
+                  <th>Term Number</th>
+                  {/* <th></th> */}
+                  <th>Description</th>
+                  <th>Statement</th>
+                  <th>Unit</th>
+                  <th>Quantity</th>
+                  <th>Unit Cost</th>
+                  <th>Repair Cost</th>
+                  <th>Total Cost</th>
+                </>
+              ) : (
+                <>
+                  <th>التاريخ</th>
+                  <th>رقم الطلب</th>
+                  <th>كود المركبة</th>
+                  <th>نوع المركبة</th>
+                  <th>رقم اللوحة</th>
+                  <th>سنة الإنتاج</th>
+                  <th>كود الصيانة</th>
+                  <th>البند</th>
+                  {/* <th></th> */}
+                  <th>البيان</th>
+                  <th>الوحدة</th>
+                  <th>كمية التوريد</th>
+                  <th>تكلفة الوحدة</th>
+                  <th>تكلفة الصيانة</th>
+                  <th>إجمالي المبلغ</th>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{date !== "" && formatDateDDMMYYYY(date)}</td>
-              <td>{orderNum}</td>
-              <td>{selectVCode}</td>
-              <td>{vehicleData && vehicleData.vehicle_type_ar}</td>
-              <td>{vehicleData && vehicleData.licence_number}</td>
-              <td dir="ltr">{vehicleData && vehicleData.vehicle_model_en}</td>
-              <td>{termsData && termsData.term_num}</td>
-              <td>{termsData && termsData.repair_desc_ar}</td>
-              <td dir="ltr">{termsData && termsData.repair_desc_en}</td>
-              <td dir="ltr">
-                {termsData
-                  ? `${termsData.term_num} ${termsData.repair_desc_ar}`
-                  : null}
-              </td>
-              <td>{unit}</td>
-              <td>{qty}</td>
-              <td>{unitCost}</td>
-              <td>{cost}</td>
-              <td>{totalCost > 0 ? totalCost : ""}</td>
+              {language === "english" ? (
+                <>
+                  <td>{date !== "" && formatDateDDMMYYYY(date)}</td>
+                  <td>{orderNum}</td>
+                  <td>{selectVCode}</td>
+                  <td>{vehicleData && vehicleData.vehicle_type_en}</td>
+                  <td>{vehicleData && vehicleData.licence_number}</td>
+                  <td dir="ltr">
+                    {vehicleData && vehicleData.vehicle_model_en}
+                  </td>
+                  <td>{termsData && termsData.term_num}</td>
+                  <td dir="ltr">{termsData && termsData.repair_desc_en}</td>
+                  <td dir="ltr">
+                    {termsData
+                      ? `${termsData.term_num} ${termsData.repair_desc_en}`
+                      : null}
+                  </td>
+                  <td>{unit}</td>
+                  <td>{qty}</td>
+                  <td>{unitCost}</td>
+                  <td>{cost}</td>
+                  <td>{totalCost > 0 ? totalCost : ""}</td>
+                </>
+              ) : (
+                <>
+                  <td>{date !== "" && formatDateDDMMYYYY(date)}</td>
+                  <td>{orderNum}</td>
+                  <td>{selectVCode}</td>
+                  <td>{vehicleData && vehicleData.vehicle_type_ar}</td>
+                  <td>{vehicleData && vehicleData.licence_number}</td>
+                  <td>{vehicleData && vehicleData.vehicle_model_ar}</td>
+                  <td>{termsData && termsData.term_num}</td>
+                  <td>{termsData && termsData.repair_desc_ar}</td>
+                  <td dir="ltr">
+                    {termsData
+                      ? `${termsData.term_num} ${termsData.repair_desc_ar}`
+                      : null}
+                  </td>
+                  <td>{unit}</td>
+                  <td>{qty}</td>
+                  <td>{unitCost}</td>
+                  <td>{cost}</td>
+                  <td>{totalCost > 0 ? totalCost : ""}</td>
+                </>
+              )}
             </tr>
           </tbody>
         </table>
