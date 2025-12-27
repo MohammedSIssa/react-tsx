@@ -45,6 +45,7 @@ export default function FilterPopup({
             <FaTimes />
           </button>
           <button
+            title="اعادة تعيين الفلاتر"
             type="button"
             onClick={onResetFilter}
             className="w-fit cursor-pointer rounded border border-neutral-500 p-2 px-5 text-neutral-400 transition-all duration-200 hover:bg-neutral-500 hover:text-white"
