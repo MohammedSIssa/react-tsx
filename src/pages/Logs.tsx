@@ -131,7 +131,7 @@ export default function Logs() {
       <div>
         <table dir={language === "english" ? "ltr" : "rtl"}>
           <thead>
-            <tr className="[&_button]:absolute [&_button]:bottom-px [&_button]:left-px [&_th]:relative [&_th]:font-bold">
+            <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-px [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
               {language === "english" ? (
                 <>
                   <th>Date</th>
