@@ -80,7 +80,6 @@ export default function CreateVehicle() {
           <div className="flex flex-col gap-2">
             <label>نوع المركبة</label>
             <input
-              required
               disabled={loading}
               value={data.vehicle_type_ar ?? ""}
               onChange={(e) =>
@@ -94,7 +93,6 @@ export default function CreateVehicle() {
 
             <label>نوع المركبة - انجليزي</label>
             <input
-              required
               disabled={loading}
               dir="ltr"
               value={data.vehicle_type_en ?? ""}
@@ -111,7 +109,6 @@ export default function CreateVehicle() {
           <div className="flex flex-col gap-2">
             <label>الموديل</label>
             <input
-              required
               disabled={loading}
               value={data.vehicle_model_ar ?? ""}
               onChange={(e) =>
@@ -125,7 +122,6 @@ export default function CreateVehicle() {
 
             <label>الموديل - انجليزي</label>
             <input
-              required
               disabled={loading}
               dir="ltr"
               value={data.vehicle_model_en ?? ""}
@@ -142,7 +138,6 @@ export default function CreateVehicle() {
           <div className="flex flex-col gap-2">
             <label>القسم</label>
             <input
-              required
               disabled={loading}
               value={data.vehicle_dept ?? ""}
               onChange={(e) =>
@@ -177,7 +172,6 @@ export default function CreateVehicle() {
         <div className="mt-5 flex flex-col gap-2">
           <label>ملاحظات:</label>
           <textarea
-            required
             disabled={loading}
             value={data.notes ?? ""}
             className="resize-none"

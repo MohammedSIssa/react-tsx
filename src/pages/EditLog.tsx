@@ -12,6 +12,9 @@ export default function EditLog() {
   const location = useLocation();
   const logData: Log = location.state.log;
 
+  const [feedback, setFeedback] = useState("");
+  const [error, setError] = useState(false);
+
   // On mount; take the data from the navlink
   const [editData, setEditData] = useState<Log>({
     log_date: logData.log_date,
@@ -38,12 +41,30 @@ export default function EditLog() {
   const [termNames, setTermNames] = useState<string[]>([]);
   const [selectTermName, setSelectTermName] = useState(logData.repair_desc_ar);
 
-  const [isPicking, setIsPicking] = useState(false);
+  // const [isPicking, setIsPicking] = useState(false);
 
   // const [unit, setUnit] = useState(logData.unit);
   // const [unitCost, setUnitCost] = useState(logData.unit_cost);
   // const [repairCost, setRepairCost] = useState(logData.repair_cost);
   // const [qty, setQty] = useState(logData.qty);
+
+  async function saveEdits(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${API}/logs/${logData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editData),
+      });
+
+      if (res.ok) {
+        setError(false);
+        setFeedback("تم حفظ التعديلات");
+      }
+    } catch {
+      setError(true);
+    }
+  }
 
   // on first mount, get all vcodes from the db.
   useEffect(() => {
@@ -66,7 +87,9 @@ export default function EditLog() {
   useEffect(() => {
     async function getDataByVCode() {
       try {
-        const res = await fetch(`${API}/vehicles/vcode/${selectVCode}`);
+        const res = await fetch(
+          `${API}/vehicles/vcode?vehicle_code=${selectVCode}`,
+        );
         if (res.ok) {
           const data: Vehicle = await res.json();
           setEditData((prev) => ({
@@ -108,7 +131,9 @@ export default function EditLog() {
   useEffect(() => {
     async function getDataByTermName() {
       try {
-        const res = await fetch(`${API}/terms/name?search=${selectTermName}`);
+        const res = await fetch(
+          `${API}/terms/name?repair_desc_ar=${selectTermName}`,
+        );
         if (res.ok) {
           const d: Term = await res.json();
           setEditData((prev) => ({
@@ -152,35 +177,20 @@ export default function EditLog() {
 
   return (
     <div className="p-10">
-      <form className="rounded-xl border border-neutral-300 bg-neutral-100 p-10 **:disabled:opacity-25 [&_input]:max-w-fit [&_input]:md:max-w-[400px] [&_input,button,textarea,select]:rounded [&_input,button,textarea,select]:p-1 [&_input,button,textarea,select]:focus:outline-0 [&_input,textarea,select]:bg-neutral-300">
+      <form
+        onSubmit={saveEdits}
+        className="rounded-xl border border-neutral-300 bg-neutral-100 p-10 **:disabled:opacity-25 [&_input]:max-w-fit [&_input]:md:max-w-[400px] [&_input,button,textarea,select]:rounded [&_input,button,textarea,select]:p-1 [&_input,button,textarea,select]:focus:outline-0 [&_input,textarea,select]:bg-neutral-300"
+      >
         <div className="flex flex-wrap items-start gap-2">
           <div className="flex flex-col gap-2">
-            <div className="date-wrapper flex flex-col gap-2">
-              <label>التاريخ</label>
-              <input
-                type="date"
-                className={`real-date ${isPicking ? "show" : "hide"}`}
-                value={editData.log_date ?? ""}
-                onChange={(e) => {
-                  setEditData((prev) => ({
-                    ...prev,
-                    log_date: e.target.value,
-                  }));
-                  setIsPicking(false); // hide again after change
-                }}
-                onBlur={() => setIsPicking(false)}
-              />
-
-              {!isPicking && (
-                <input
-                  type="text"
-                  className="fake-date"
-                  readOnly
-                  value={formatDateDDMMYYYY(editData.log_date ?? "")}
-                  onClick={() => setIsPicking(true)}
-                />
-              )}
-            </div>
+            <label>التاريخ</label>
+            <input
+              type="date"
+              value={editData.log_date ?? ""}
+              onChange={(e) =>
+                setEditData((prev) => ({ ...prev, log_date: e.target.value }))
+              }
+            />
 
             <label>كود المركبة</label>
             <Listbox
@@ -305,6 +315,10 @@ export default function EditLog() {
             ></textarea>
           </div>
         </div>
+        <button type="submit" className="bg-blue-400 font-bold text-white">
+          حفظ التعديلات
+        </button>
+        <p className={error ? "text-red-500" : "text-green-500"}>{feedback}</p>
       </form>
       <div className="preview mt-10">
         <h1 className="mb-3 text-xl font-bold">البيانات:</h1>

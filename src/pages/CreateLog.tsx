@@ -94,7 +94,7 @@ export default function CreateLog() {
   useEffect(() => {
     setLogsData((prev) => ({
       ...prev,
-      logs_date: date ? date : "",
+      log_date: date ? date : "",
       unit: unit ? unit : "",
       qty: qty ? +qty : 0,
       unit_cost: unitCost ? +unitCost : 0,
@@ -146,7 +146,9 @@ export default function CreateLog() {
   useEffect(() => {
     async function getDataByRepairType() {
       try {
-        const res = await fetch(`${API}/terms/type/${selectRepairType}`);
+        const res = await fetch(
+          `${API}/terms/type?repair_type_ar=${selectRepairType}`,
+        );
         setTermNames([]);
         setSelectTermName("");
         if (res.ok) {
@@ -169,7 +171,9 @@ export default function CreateLog() {
     async function getDataByTermName() {
       try {
         setTermsData(null);
-        const res = await fetch(`${API}/terms/name?search=${selectTermName}`);
+        const res = await fetch(
+          `${API}/terms/name?repair_desc_ar=${selectTermName}`,
+        );
         if (res.ok) {
           const d = await res.json();
           setTermsData(d);
@@ -192,7 +196,10 @@ export default function CreateLog() {
     async function getVehicleDataByVCode() {
       try {
         setVehicleData(null);
-        const res = await fetch(`${API}/vehicles/vcode/${selectVCode}`);
+        // const res = await fetch(`${API}/vehicles/vcode/${selectVCode}`);
+        const res = await fetch(
+          `${API}/vehicles/vcode?vehicle_code=${selectVCode}`,
+        );
         if (res.ok) {
           const d: Vehicle = await res.json();
           setVehicleData(d);
