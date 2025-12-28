@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import type { Term } from "../types/Term";
 import { API } from "../variables/globals";
+import ExportToExcel from "../components/ExportToExcelButton";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorPage from "./ErrorPage";
@@ -12,6 +13,7 @@ import DeleteButton from "../components/DeleteButton";
 import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
+import { exportRepairTerms } from "../variables/excel-export";
 // import { BsDatabaseX } from "react-icons/bs";
 
 export default function Terms() {
@@ -82,6 +84,9 @@ export default function Terms() {
   if (data)
     return (
       <div>
+        <div className="hide-when-print flex items-center justify-center p-2">
+          <ExportToExcel onClick={() => exportRepairTerms(data ?? [])} />
+        </div>
         <table>
           <thead>
             <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">

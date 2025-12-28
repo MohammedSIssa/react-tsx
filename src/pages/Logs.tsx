@@ -9,6 +9,10 @@ import { formatDateDDMMYYYY } from "../utils/formatData";
 
 import { NavLink } from "react-router";
 
+import ExportToExcel from "../components/ExportToExcelButton";
+
+import { exportLogs } from "../variables/excel-export";
+
 import DeleteButton from "../components/DeleteButton";
 
 import { MdEdit } from "react-icons/md";
@@ -146,6 +150,9 @@ export default function Logs() {
   if (data)
     return (
       <div>
+        <div className="hide-when-print flex items-center justify-center p-2">
+          <ExportToExcel onClick={() => exportLogs(data ?? [])} />
+        </div>
         <table dir={language === "english" ? "ltr" : "rtl"}>
           <thead>
             <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
