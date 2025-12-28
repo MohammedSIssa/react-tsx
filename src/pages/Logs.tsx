@@ -156,7 +156,6 @@ export default function Logs() {
                     <button
                       onClick={() => {
                         setShowDateFilter(true);
-                        setFilteringBy("log_date");
                         setFilterData(Array.from(datesSet));
                       }}
                     >
@@ -256,7 +255,17 @@ export default function Logs() {
                 </>
               ) : (
                 <>
-                  <th>التاريخ</th>
+                  <th>
+                    التاريخ{" "}
+                    <button
+                      onClick={() => {
+                        setShowDateFilter(true);
+                        setFilterData(Array.from(datesSet));
+                      }}
+                    >
+                      <FaFilter />
+                    </button>
+                  </th>
                   <th>
                     رقم الطلب{" "}
                     <button

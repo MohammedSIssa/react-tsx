@@ -51,7 +51,7 @@ export default function DateFilterPopup({
             ))}
           </div>
 
-          <p className="mt-4 font-semibold">مخصص</p>
+          <p className="mt-4 font-semibold">إعدادات جاهزة</p>
           <div className="flex flex-col gap-2">
             <button
               type="button"
