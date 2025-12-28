@@ -18,12 +18,15 @@ import { BsDatabaseX } from "react-icons/bs";
 import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
+import DateFilterPopup from "../components/DateFilterPopup";
 
 export default function Logs() {
   const [allLogs, setAllLogs] = useState<Log[] | null>(null);
   const [data, setData] = useState<Log[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const [showDateFilter, setShowDateFilter] = useState(false);
 
   const [showFilterPopup, setShowFilterPop] = useState(false);
 
@@ -32,6 +35,18 @@ export default function Logs() {
   const [selectedFilterValue, setSelectedFilterValue] = useState<
     string | number
   >("");
+
+  type DateFilter = {
+    from: string | null; // YYYY-MM-DD
+    to: string | null; // YYYY-MM-DD
+  };
+
+  const [dateFilter, setDateFilter] = useState<DateFilter>({
+    from: null,
+    to: null,
+  });
+
+  const [datesSet, setDatesSet] = useState<Set<string>>(new Set());
 
   // Filters sets state
   const [orderNumbersSet, setOrderNumbersSet] = useState<Set<string>>(
@@ -75,6 +90,8 @@ export default function Logs() {
           const logs = await res.json();
           setData(logs);
           setAllLogs(logs);
+          setDatesSet(new Set(logs.map((log: Log) => log.log_date)));
+
           // Setting filters options
           setOrderNumbersSet(new Set(logs.map((log: Log) => log.order_num)));
           setVehicleCodeSet(new Set(logs.map((log: Log) => log.vehicle_code)));
@@ -134,7 +151,18 @@ export default function Logs() {
             <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
               {language === "english" ? (
                 <>
-                  <th>Date</th>
+                  <th>
+                    Date{" "}
+                    <button
+                      onClick={() => {
+                        setShowDateFilter(true);
+                        setFilteringBy("log_date");
+                        setFilterData(Array.from(datesSet));
+                      }}
+                    >
+                      <FaFilter />
+                    </button>
+                  </th>
                   <th>
                     Order Num{" "}
                     <button
@@ -395,6 +423,49 @@ export default function Logs() {
             </tr>
           </tbody>
         </table>
+        {showDateFilter && (
+          <DateFilterPopup
+            dates={(filterData ?? []).map(String)} // array of YYYY-MM-DD
+            value={dateFilter}
+            onChange={setDateFilter}
+            onExit={() => {
+              setShowDateFilter(false);
+              setDateFilter({ from: null, to: null });
+            }}
+            onApply={() => {
+              if (!allLogs) return;
+
+              const filtered = allLogs.filter((log) => {
+                if (
+                  dateFilter.from &&
+                  log.log_date &&
+                  log.log_date < dateFilter.from
+                ) {
+                  return false;
+                }
+
+                if (
+                  dateFilter.to &&
+                  log.log_date &&
+                  log.log_date > dateFilter.to
+                ) {
+                  return false;
+                }
+
+                return true;
+              });
+
+              setData(filtered);
+              setShowDateFilter(false);
+              setDateFilter({ from: null, to: null });
+            }}
+            onResetFilter={() => {
+              setDateFilter({ from: null, to: null });
+              setData(allLogs);
+              setShowDateFilter(false);
+            }}
+          />
+        )}
         {showFilterPopup && (
           <FilterPopup
             data={filterData ?? []}

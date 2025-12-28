@@ -1,9 +1,25 @@
-export function formatDateDDMMYYYY(isoDate: string) {
-  const date = new Date(isoDate);
+export function formatDateDDMMYYYY(date: string) {
+  const [y, m, d] = date.split("-");
+  return `${d}/${m}/${y}`;
+}
 
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
+export function toDDMMYYYY(date: string) {
+  const [y, m, d] = date.split("-");
+  return `${d}/${m}/${y}`;
+}
 
-  return `${day}/${month}/${year}`;
+export function toYYYYMMDD(date: string) {
+  const [day, month, year] = date.split("/");
+
+  return [year, month.padStart(2, "0"), day.padStart(2, "0")].join("-");
+}
+
+export function todayYYYYMMDD() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+export function daysAgoYYYYMMDD(days: number) {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d.toISOString().slice(0, 10);
 }
