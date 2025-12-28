@@ -203,6 +203,7 @@ export default function CreateLog() {
             vehicle_model_ar: d.vehicle_model_ar,
             vehicle_model_en: d.vehicle_model_en,
             vehicle_type_ar: d.vehicle_type_ar,
+            vehicle_type_en: d.vehicle_type_en,
           }));
         }
       } catch {

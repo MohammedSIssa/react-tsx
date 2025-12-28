@@ -34,13 +34,13 @@ export default function DateFilterPopup({
       <div className="flex min-w-[320px] gap-4 rounded-xl border border-neutral-500 bg-white p-8 shadow-xl shadow-black/20">
         <div className="flex flex-col gap-4">
           <p className="font-semibold">من الجدول</p>
-          <div className="flex max-h-40 flex-wrap gap-2 overflow-y-auto">
+          <div className="max-full flex max-h-40 flex-wrap gap-2 overflow-x-auto overflow-y-auto md:max-w-[400px]">
             {dates.map((date) => (
               <button
                 key={date}
                 type="button"
                 onClick={() => onChange({ from: date, to: date })}
-                className={`rounded border px-3 py-1 text-sm transition ${
+                className={`rounded border px-3 py-1 text-xs transition ${
                   value.from === date && value.to === date
                     ? "border-green-500 bg-green-500 text-white"
                     : "border-neutral-400"
