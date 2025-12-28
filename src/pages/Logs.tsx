@@ -13,7 +13,7 @@ import DeleteButton from "../components/DeleteButton";
 
 import { MdEdit } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
-import { BsDatabaseX } from "react-icons/bs";
+// import { BsDatabaseX } from "react-icons/bs";
 
 import useLanguage from "../hooks/useLanguage";
 
@@ -137,13 +137,13 @@ export default function Logs() {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
-  if (data?.length === 0)
-    return (
-      <div className="flex h-[300px] items-center justify-center text-black/20">
-        <BsDatabaseX size={100} />
-      </div>
-    );
-  if (data && data.length)
+  // if (data?.length === 0)
+  //   return (
+  //     <div className="flex h-[300px] items-center justify-center text-black/20">
+  //       <BsDatabaseX size={100} />
+  //     </div>
+  //   );
+  if (data)
     return (
       <div>
         <table dir={language === "english" ? "ltr" : "rtl"}>

@@ -12,7 +12,7 @@ import DeleteButton from "../components/DeleteButton";
 import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
-import { BsDatabaseX } from "react-icons/bs";
+// import { BsDatabaseX } from "react-icons/bs";
 
 export default function Terms() {
   const [allTerms, setAllTerms] = useState<Term[] | null>(null);
@@ -73,13 +73,13 @@ export default function Terms() {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
-  if (data?.length === 0)
-    return (
-      <div className="flex h-[300px] items-center justify-center text-black/20">
-        <BsDatabaseX size={100} />
-      </div>
-    );
-  if (data && data.length)
+  // if (data?.length === 0)
+  //   return (
+  //     <div className="flex h-[300px] items-center justify-center text-black/20">
+  //       <BsDatabaseX size={100} />
+  //     </div>
+  //   );
+  if (data)
     return (
       <div>
         <table>
