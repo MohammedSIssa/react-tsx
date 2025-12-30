@@ -366,6 +366,7 @@ export default function Vehicles() {
                   String(selectedFilterValue),
               );
 
+              setPageNumber(1);
               setData(filtered);
               setShowFilterPop(false);
               setSelectedFilterValue("");

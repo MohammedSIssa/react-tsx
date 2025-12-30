@@ -526,6 +526,7 @@ export default function Logs() {
                   String(selectedFilterValue),
               );
 
+              setPageNumber(1);
               setData(filtered);
               setShowFilterPop(false);
               setSelectedFilterValue("");

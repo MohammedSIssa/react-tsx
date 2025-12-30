@@ -247,6 +247,7 @@ export default function Terms() {
             );
 
             setData(filtered);
+            setPageNumber(1);
             setShowFilterPop(false);
             setSelectedFilterValue("");
           }}
