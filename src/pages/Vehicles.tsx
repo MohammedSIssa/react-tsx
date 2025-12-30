@@ -16,11 +16,37 @@ import useLanguage from "../hooks/useLanguage";
 import FilterPopup from "../components/FilterPopup";
 import { exportVehicles } from "../variables/excel-export";
 
+import { FaCheckCircle } from "react-icons/fa";
+import { IoIosWarning } from "react-icons/io";
+import { FaTimesCircle } from "react-icons/fa";
+import { FaPrint } from "react-icons/fa";
+
+import { paginate, getTotalPages } from "../variables/pagination";
+
 export default function Vehicles() {
   const [allVehicles, setAllVehicles] = useState<Vehicle[] | null>(null);
   const [data, setData] = useState<Vehicle[] | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageLimit, setPageLimit] = useState<number>(15);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [shownData, setShownData] = useState<Vehicle[] | null>(null);
+
+  useEffect(() => {
+    // pagination starts here.
+    if (data !== null) {
+      const show = paginate(data, pageNumber, pageLimit);
+      const pages = getTotalPages(data, pageLimit);
+      setTotalPages(pages);
+      setShownData(show as Vehicle[]);
+    }
+  }, [pageNumber, data, pageLimit]);
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [pageLimit]);
 
   const [filterData, setFilterData] = useState<number[] | string[]>();
   const [filteringBy, setFilteringBy] = useState<keyof Vehicle>("vehicle_code");
@@ -100,12 +126,18 @@ export default function Vehicles() {
         <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
           بيانات الآليات
         </div>
-        <div className="hide-when-print flex items-center justify-center pb-2">
+        <div className="hide-when-print flex items-center justify-center gap-2 pb-2">
           <ExportToExcel onClick={() => exportVehicles(data ?? [])} />
+          <button
+            className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition-all duration-200 hover:bg-blue-600"
+            onClick={() => window.print()}
+          >
+            <FaPrint size={24} />
+          </button>
         </div>
-        <table>
-          <thead>
-            <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
+        <table className="mb-25 **:text-xs">
+          <thead className="bg-slate-800 font-bold text-white">
+            <tr className="[&_button]:absolute [&_button]:top-1 [&_button]:left-1 [&_button]:cursor-pointer [&_button]:text-slate-300 [&_th]:relative [&_th]:border-r [&_th]:border-l [&_th]:border-slate-400 [&_th]:font-bold">
               {language === "english" ? (
                 <>
                   <th>
@@ -117,7 +149,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(vehicleCodeSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -129,7 +161,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(vehicleTypeEnSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -141,7 +173,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(licenceNumberSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -153,7 +185,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(modelEnSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -165,7 +197,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(deptSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -177,7 +209,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(stateSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>Notes</th>
@@ -193,7 +225,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(vehicleCodeSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -205,7 +237,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(vehicleTypeArSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                     نوع المركبة
                   </th>
@@ -218,7 +250,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(licenceNumberSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -230,7 +262,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(modelArSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -242,7 +274,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(deptSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -254,7 +286,7 @@ export default function Vehicles() {
                         setFilterData(Array.from(stateSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>ملاحظات</th>
@@ -264,8 +296,8 @@ export default function Vehicles() {
               <th className="hide-when-print">اجراءات</th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((vehicle, idx) => (
+          <tbody className="[&_tr]:odd:bg-neutral-100 [&_tr]:even:bg-neutral-200 [&_tr]:last-of-type:bg-white">
+            {shownData?.map((vehicle, idx) => (
               <tr key={idx}>
                 {language === "english" ? (
                   <>
@@ -273,13 +305,6 @@ export default function Vehicles() {
                     <td dir="ltr">{vehicle.vehicle_type_en}</td>
                     <td>{vehicle.licence_number}</td>
                     <td dir="ltr">{vehicle.vehicle_model_en}</td>
-                    <td>{vehicle.vehicle_dept}</td>
-                    <td
-                      className={`${vehicle.vehicle_state === "مدمرة" ? "bg-red-200" : vehicle.vehicle_state === "لا تعمل" ? "bg-yellow-200" : "bg-green-200"}`}
-                    >
-                      {vehicle.vehicle_state}
-                    </td>
-                    <td>{vehicle.notes ?? ""}</td>
                   </>
                 ) : (
                   <>
@@ -288,18 +313,29 @@ export default function Vehicles() {
                     <td>{vehicle.licence_number}</td>
                     <td>{vehicle.vehicle_model_ar}</td>
                     <td>{vehicle.vehicle_dept}</td>
-                    <td
-                      className={`${vehicle.vehicle_state === "مدمرة" ? "bg-red-200" : vehicle.vehicle_state === "لا تعمل" ? "bg-yellow-200" : "bg-green-200"}`}
-                    >
-                      {vehicle.vehicle_state}
-                    </td>
-                    <td>{vehicle.notes ?? ""}</td>
                   </>
                 )}
-                <td className="hide-when-print flex gap-1 border-0 border-l p-1">
+                <td>
+                  <span
+                    className={`flex h-fit w-fit items-center gap-2 rounded-xl p-2 px-4 ${vehicle.vehicle_state === "مدمرة" ? "bg-red-200 text-red-900" : vehicle.vehicle_state === "لا تعمل" ? "bg-yellow-200 text-yellow-900" : "bg-green-200 text-green-900"}`}
+                  >
+                    <span className="hide-when-print">
+                      {vehicle.vehicle_state === "تعمل" ? (
+                        <FaCheckCircle size={16} />
+                      ) : vehicle.vehicle_state === "لا تعمل" ? (
+                        <IoIosWarning size={18} />
+                      ) : (
+                        <FaTimesCircle size={16} />
+                      )}
+                    </span>
+                    {vehicle.vehicle_state}
+                  </span>
+                </td>
+                <td>{vehicle.notes ?? ""}</td>
+                <td className="hide-when-print flex gap-1 p-1">
                   <NavLink
                     to={`/edit/vehicle`}
-                    className="rounded bg-blue-500 p-2 px-3 text-white"
+                    className="rounded border-0 bg-slate-700 p-2 px-3 text-white"
                     state={{ vehicle }}
                   >
                     <MdEdit size={16} />
@@ -341,6 +377,39 @@ export default function Vehicles() {
             }}
           />
         )}
+        <div className="hide-when-print fixed bottom-0 mt-4 flex h-20 w-full items-center justify-between bg-slate-800 p-2 px-10">
+          <div>
+            {totalPages > 1 &&
+              Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPageNumber(i + 1)}
+                  className={`h-fit cursor-pointer border-r border-l border-slate-800 px-3 py-1 shadow-sm transition-colors duration-200 ${
+                    pageNumber === i + 1
+                      ? "bg-slate-600 font-semibold text-white"
+                      : "bg-gray-100 text-gray-800"
+                  } `}
+                >
+                  {i + 1}
+                </button>
+              ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-white">عدد السطور: </label>
+            <select
+              value={pageLimit}
+              onChange={(e) => setPageLimit(Number(e.target.value))}
+              className="w-30 bg-slate-700 p-2 text-white focus:outline-0 [&_option]:bg-slate-700"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+              <option value={9999}>كل السطور</option>
+            </select>
+          </div>
+        </div>
       </div>
     );
 }

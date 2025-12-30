@@ -8,12 +8,15 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorPage from "./ErrorPage";
 import { MdEdit } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
+import { FaPrint } from "react-icons/fa";
 import DeleteButton from "../components/DeleteButton";
 
 import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
 import { exportRepairTerms } from "../variables/excel-export";
+
+import { paginate, getTotalPages } from "../variables/pagination";
 
 export default function Terms() {
   const [allTerms, setAllTerms] = useState<Term[] | null>(null);
@@ -72,6 +75,25 @@ export default function Terms() {
     getTermsData();
   }, []);
 
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageLimit, setPageLimit] = useState<number>(15);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [shownData, setShownData] = useState<Term[] | null>(null);
+
+  useEffect(() => {
+    // pagination starts here.
+    if (data !== null) {
+      const show = paginate(data, pageNumber, pageLimit);
+      const pages = getTotalPages(data, pageLimit);
+      setTotalPages(pages);
+      setShownData(show as Term[]);
+    }
+  }, [pageNumber, data, pageLimit]);
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [pageLimit]);
+
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
   return (
@@ -79,12 +101,18 @@ export default function Terms() {
       <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
         بنود الصيانة
       </div>
-      <div className="hide-when-print flex items-center justify-center pb-2">
+      <div className="hide-when-print flex items-center justify-center gap-2 pb-2">
         <ExportToExcel onClick={() => exportRepairTerms(data ?? [])} />
+        <button
+          className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition-all duration-200 hover:bg-blue-600"
+          onClick={() => window.print()}
+        >
+          <FaPrint size={24} />
+        </button>
       </div>
-      <table>
-        <thead>
-          <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
+      <table className="mb-25 **:text-xs">
+        <thead className="bg-slate-800 font-bold text-white">
+          <tr className="[&_button]:absolute [&_button]:top-1 [&_button]:left-1 [&_button]:cursor-pointer [&_button]:text-slate-300 [&_th]:relative [&_th]:border-r [&_th]:border-l [&_th]:border-slate-400 [&_th]:font-bold">
             <th>
               {"#"}{" "}
               <button
@@ -94,7 +122,7 @@ export default function Terms() {
                   setFilterData(Array.from(termNumSet));
                 }}
               >
-                <FaFilter />
+                <FaFilter size={10} />
               </button>
             </th>
             {language === "english" ? (
@@ -108,7 +136,7 @@ export default function Terms() {
                       setFilterData(Array.from(repairTypeEnSet));
                     }}
                   >
-                    <FaFilter />
+                    <FaFilter size={10} />
                   </button>
                 </th>
                 <th>
@@ -120,7 +148,7 @@ export default function Terms() {
                       setFilterData(Array.from(repairDescEnSet));
                     }}
                   >
-                    <FaFilter />
+                    <FaFilter size={10} />
                   </button>
                 </th>
                 <th>Unit</th>
@@ -138,7 +166,7 @@ export default function Terms() {
                       setFilterData(Array.from(repairTypeArSet));
                     }}
                   >
-                    <FaFilter />
+                    <FaFilter size={10} />
                   </button>
                 </th>
                 <th>
@@ -150,7 +178,7 @@ export default function Terms() {
                       setFilterData(Array.from(repairDescArSet));
                     }}
                   >
-                    <FaFilter />
+                    <FaFilter size={10} />
                   </button>
                 </th>
                 <th>الوحدة</th>
@@ -161,9 +189,9 @@ export default function Terms() {
             <th className="hide-when-print">اجراءات</th>
           </tr>
         </thead>
-        <tbody>
-          {data &&
-            data.map((term, idx) => (
+        <tbody className="[&_tr]:odd:bg-neutral-100 [&_tr]:even:bg-neutral-200 [&_tr]:last-of-type:bg-white">
+          {shownData &&
+            shownData.map((term, idx) => (
               <tr key={idx}>
                 {language === "english" ? (
                   <>
@@ -184,10 +212,10 @@ export default function Terms() {
                 )}
                 <td>{term.service_cost}</td>
 
-                <td className="hide-when-print flex gap-1 border-0 border-l p-1">
+                <td className="hide-when-print flex gap-1 p-1">
                   <NavLink
                     to={`/edit/term`}
-                    className="rounded bg-blue-500 p-2 px-3 text-white"
+                    className="rounded border-0 bg-slate-700 p-2 px-3 text-white"
                     state={{ term }}
                   >
                     <MdEdit size={16} />
@@ -229,6 +257,39 @@ export default function Terms() {
           }}
         />
       )}
+      <div className="hide-when-print fixed bottom-0 mt-4 flex h-20 w-full items-center justify-between bg-slate-800 p-2 px-10">
+        <div>
+          {totalPages > 1 &&
+            Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setPageNumber(i + 1)}
+                className={`h-fit cursor-pointer border-r border-l border-slate-800 px-3 py-1 shadow-sm transition-colors duration-200 ${
+                  pageNumber === i + 1
+                    ? "bg-slate-600 font-semibold text-white"
+                    : "bg-gray-100 text-gray-800"
+                } `}
+              >
+                {i + 1}
+              </button>
+            ))}
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-white">عدد السطور: </label>
+          <select
+            value={pageLimit}
+            onChange={(e) => setPageLimit(Number(e.target.value))}
+            className="w-30 bg-slate-700 p-2 text-white focus:outline-0 [&_option]:bg-slate-700"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={9999}>كل السطور</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
 }

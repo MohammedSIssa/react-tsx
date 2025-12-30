@@ -30,13 +30,13 @@ import { paginate, getTotalPages } from "../variables/pagination";
 export default function Logs() {
   const [allLogs, setAllLogs] = useState<Log[] | null>(null);
   const [data, setData] = useState<Log[] | null>(null);
-  const [shownData, setShownData] = useState<Log[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageLimit, setPageLimit] = useState<number>(10);
+  const [pageLimit, setPageLimit] = useState<number>(15);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [shownData, setShownData] = useState<Log[] | null>(null);
 
   const [showDateFilter, setShowDateFilter] = useState(false);
 
@@ -161,11 +161,6 @@ export default function Logs() {
     setPageNumber(1);
   }, [pageLimit]);
 
-  const handleShowAllData = () => {
-    setShownData(allLogs);
-    setPageLimit(999);
-  };
-
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
   if (data)
@@ -188,7 +183,7 @@ export default function Logs() {
           className="mb-25 **:text-xs"
         >
           <thead className="bg-slate-800 font-bold text-white">
-            <tr className="[&_button]:absolute [&_button]:top-1 [&_button]:left-1 [&_button]:cursor-pointer [&_button]:bg-slate-900 [&_button]:text-slate-300 [&_th]:relative [&_th]:border-r [&_th]:border-l [&_th]:border-slate-400 [&_th]:font-bold">
+            <tr className="[&_button]:absolute [&_button]:top-1 [&_button]:left-1 [&_button]:cursor-pointer [&_button]:text-slate-300 [&_th]:relative [&_th]:border-r [&_th]:border-l [&_th]:border-slate-400 [&_th]:font-bold">
               {language === "english" ? (
                 <>
                   <th>
@@ -437,7 +432,7 @@ export default function Logs() {
                 <td>{log.unit_cost}</td>
                 <td>{log.repair_cost}</td>
                 <td>{log.total_cost}</td>
-                <td className="hide-when-print flex gap-1 border-0 p-1">
+                <td className="hide-when-print flex gap-1 p-1">
                   <NavLink
                     to={`/edit/log`}
                     className="rounded border-0 bg-slate-700 p-2 px-3 text-white"
@@ -572,13 +567,8 @@ export default function Logs() {
               <option value={15}>15</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
+              <option value={9999}>كل السطور</option>
             </select>
-            <button
-              onClick={handleShowAllData}
-              className="cursor-pointer rounded bg-slate-600 p-1 px-4 text-white hover:bg-slate-700"
-            >
-              إظهار جميع البيانات
-            </button>
           </div>
         </div>
       </div>
