@@ -20,7 +20,7 @@ table {
   max-width: 100% !important;
   min-width: 100%;
   direction: rtl;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #1d293d;
 }
 
 td:not(.border-0),
