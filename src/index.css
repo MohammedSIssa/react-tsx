@@ -18,12 +18,12 @@ table {
   letter-spacing: 1px;
   font-size: 0.8rem;
   max-width: 100% !important;
+  min-width: 100%;
   direction: rtl;
 }
 
 td:not(.border-0),
 th {
-  /* border: 1px solid black; */
   padding: 2px 5px;
 }
 

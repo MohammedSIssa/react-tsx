@@ -98,16 +98,16 @@ export default function Terms() {
   if (error) return <ErrorPage />;
   return (
     <div>
-      <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
+      <div className="hide-when-print p-5 pb-2 text-2xl font-bold">
         بنود الصيانة
       </div>
-      <div className="hide-when-print flex items-center justify-center gap-2 pb-2">
+      <div className="hide-when-print flex items-center gap-2 px-5 pb-2">
         <ExportToExcel onClick={() => exportRepairTerms(data ?? [])} />
         <button
           className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition-all duration-200 hover:bg-blue-600"
           onClick={() => window.print()}
         >
-          <FaPrint size={24} />
+          <FaPrint size={20} />
         </button>
       </div>
       <table className="mb-25 **:text-xs">

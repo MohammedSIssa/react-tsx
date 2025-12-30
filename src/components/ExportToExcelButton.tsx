@@ -18,7 +18,7 @@ export default function ExportToExcel({
       onClick={handleClick}
       title="Export to Excel"
     >
-      <LiaFileDownloadSolid size={24} />
+      <LiaFileDownloadSolid size={20} />
     </button>
   );
 }
