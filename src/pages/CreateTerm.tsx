@@ -195,26 +195,3 @@ export default function CreateTerm() {
     </div>
   );
 }
-
-// {
-// vehicle_code,
-// licence_number,
-// vehicle_type_en,
-// vehicle_type_ar,
-// vehicle_model_ar,
-// vehicle_state,
-// vehicle_dept,
-// vehicle_model_en,
-// notes,
-// }
-
-// {
-//   repair_type_ar,
-//   repair_type_en,
-//   repair_desc_ar,
-//   repair_desc_en,
-//   uom,
-//   qty,
-//   service_cost,
-//   term_num,
-// }

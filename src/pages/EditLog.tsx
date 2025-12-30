@@ -4,7 +4,12 @@ import type { Log } from "../types/Log";
 import type { Term } from "../types/Term";
 import type { Vehicle } from "../types/Vehicle";
 
-import { Listbox } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxOptions,
+  ListboxOption,
+  ListboxButton,
+} from "@headlessui/react";
 
 import { useState, useEffect } from "react";
 import { formatDateDDMMYYYY } from "../utils/formatData";
@@ -40,13 +45,6 @@ export default function EditLog() {
 
   const [termNames, setTermNames] = useState<string[]>([]);
   const [selectTermName, setSelectTermName] = useState(logData.repair_desc_ar);
-
-  // const [isPicking, setIsPicking] = useState(false);
-
-  // const [unit, setUnit] = useState(logData.unit);
-  // const [unitCost, setUnitCost] = useState(logData.unit_cost);
-  // const [repairCost, setRepairCost] = useState(logData.repair_cost);
-  // const [qty, setQty] = useState(logData.qty);
 
   async function saveEdits(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -200,14 +198,14 @@ export default function EditLog() {
             >
               <div className="relative md:max-w-[500px]">
                 {/* Button */}
-                <Listbox.Button className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
+                <ListboxButton className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
                   {selectVCode || "-- اختر --"}
-                </Listbox.Button>
+                </ListboxButton>
 
                 {/* Options */}
-                <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
+                <ListboxOptions className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
                   {vcodes.map((code, idx) => (
-                    <Listbox.Option
+                    <ListboxOption
                       key={idx}
                       value={code}
                       className={({ active, selected }) =>
@@ -215,9 +213,9 @@ export default function EditLog() {
                       }
                     >
                       {code}
-                    </Listbox.Option>
+                    </ListboxOption>
                   ))}
-                </Listbox.Options>
+                </ListboxOptions>
               </div>
             </Listbox>
             <label>اسم البند</label>
@@ -228,14 +226,14 @@ export default function EditLog() {
             >
               <div className="relative min-w-[300px] md:max-w-[500px]">
                 {/* Button */}
-                <Listbox.Button className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
+                <ListboxButton className="w-full rounded bg-neutral-300 p-1 text-right focus:outline-0 disabled:opacity-25">
                   {selectTermName || "-- اختر --"}
-                </Listbox.Button>
+                </ListboxButton>
 
                 {/* Options */}
-                <Listbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
+                <ListboxOptions className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded bg-white text-right shadow-lg">
                   {termNames.map((code, idx) => (
-                    <Listbox.Option
+                    <ListboxOption
                       key={idx}
                       value={code}
                       className={({ active, selected }) =>
@@ -243,9 +241,9 @@ export default function EditLog() {
                       }
                     >
                       {code}
-                    </Listbox.Option>
+                    </ListboxOption>
                   ))}
-                </Listbox.Options>
+                </ListboxOptions>
               </div>
             </Listbox>
           </div>

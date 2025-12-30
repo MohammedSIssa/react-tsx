@@ -26,7 +26,7 @@ export default function DeleteButton({
   return (
     <button
       onClick={clickHandler}
-      className="cursor-pointer rounded bg-red-500 p-2 px-3 text-white"
+      className="cursor-pointer rounded bg-red-700 p-2 px-3 text-white"
     >
       <MdDelete />
     </button>

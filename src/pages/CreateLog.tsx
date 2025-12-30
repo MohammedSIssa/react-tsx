@@ -156,7 +156,7 @@ export default function CreateLog() {
           setTermNames(termss);
         }
       } catch {
-        console.error("ERror");
+        console.error("Error");
       } finally {
         setLoadingTermNames(false);
       }

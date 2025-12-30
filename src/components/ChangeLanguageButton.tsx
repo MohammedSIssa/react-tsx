@@ -9,7 +9,7 @@ export default function ChangeLanguageButton() {
   const [selectedLang, setSelectedLang] = useState(language);
 
   return (
-    <form className="flex flex-row-reverse items-center gap-2 [&_select]:p-2 [&_select]:focus:border [&_select]:focus:border-violet-400 [&_select]:focus:outline-0">
+    <form className="flex flex-row-reverse items-center justify-center gap-2 bg-slate-900 text-white [&_option]:bg-slate-700 [&_select]:p-2 [&_select]:focus:outline-0">
       <label htmlFor="lang">
         <MdGTranslate />
       </label>

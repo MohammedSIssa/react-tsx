@@ -14,7 +14,6 @@ import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
 import { exportRepairTerms } from "../variables/excel-export";
-// import { BsDatabaseX } from "react-icons/bs";
 
 export default function Terms() {
   const [allTerms, setAllTerms] = useState<Term[] | null>(null);
@@ -75,99 +74,96 @@ export default function Terms() {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
-  // if (data?.length === 0)
-  //   return (
-  //     <div className="flex h-[300px] items-center justify-center text-black/20">
-  //       <BsDatabaseX size={100} />
-  //     </div>
-  //   );
-  if (data)
-    return (
-      <div>
-        <div className="hide-when-print flex items-center justify-center p-2">
-          <ExportToExcel onClick={() => exportRepairTerms(data ?? [])} />
-        </div>
-        <table>
-          <thead>
-            <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
-              <th>
-                {"#"}{" "}
-                <button
-                  onClick={() => {
-                    setShowFilterPop(true);
-                    setFilteringBy("term_num");
-                    setFilterData(Array.from(termNumSet));
-                  }}
-                >
-                  <FaFilter />
-                </button>
-              </th>
-              {language === "english" ? (
-                <>
-                  <th>
-                    Repair Type{" "}
-                    <button
-                      onClick={() => {
-                        setShowFilterPop(true);
-                        setFilteringBy("repair_type_en");
-                        setFilterData(Array.from(repairTypeEnSet));
-                      }}
-                    >
-                      <FaFilter />
-                    </button>
-                  </th>
-                  <th>
-                    Repair Description{" "}
-                    <button
-                      onClick={() => {
-                        setShowFilterPop(true);
-                        setFilteringBy("repair_desc_en");
-                        setFilterData(Array.from(repairDescEnSet));
-                      }}
-                    >
-                      <FaFilter />
-                    </button>
-                  </th>
-                  <th>Unit</th>
-                  <th>Quantity</th>
-                  <th dir="ltr">Cost {"($)"}</th>
-                </>
-              ) : (
-                <>
-                  <th>
-                    نوع الصيانة{" "}
-                    <button
-                      onClick={() => {
-                        setShowFilterPop(true);
-                        setFilteringBy("repair_type_ar");
-                        setFilterData(Array.from(repairTypeArSet));
-                      }}
-                    >
-                      <FaFilter />
-                    </button>
-                  </th>
-                  <th>
-                    وصف الصيانة{" "}
-                    <button
-                      onClick={() => {
-                        setShowFilterPop(true);
-                        setFilteringBy("repair_desc_ar");
-                        setFilterData(Array.from(repairDescArSet));
-                      }}
-                    >
-                      <FaFilter />
-                    </button>
-                  </th>
-                  <th>الوحدة</th>
-                  <th>الكمية</th>
-                  <th>التكلفة {"($)"}</th>
-                </>
-              )}
-              <th className="hide-when-print">اجراءات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((term, idx) => (
+  return (
+    <div>
+      <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
+        بنود الصيانة
+      </div>
+      <div className="hide-when-print flex items-center justify-center pb-2">
+        <ExportToExcel onClick={() => exportRepairTerms(data ?? [])} />
+      </div>
+      <table>
+        <thead>
+          <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
+            <th>
+              {"#"}{" "}
+              <button
+                onClick={() => {
+                  setShowFilterPop(true);
+                  setFilteringBy("term_num");
+                  setFilterData(Array.from(termNumSet));
+                }}
+              >
+                <FaFilter />
+              </button>
+            </th>
+            {language === "english" ? (
+              <>
+                <th>
+                  Repair Type{" "}
+                  <button
+                    onClick={() => {
+                      setShowFilterPop(true);
+                      setFilteringBy("repair_type_en");
+                      setFilterData(Array.from(repairTypeEnSet));
+                    }}
+                  >
+                    <FaFilter />
+                  </button>
+                </th>
+                <th>
+                  Repair Description{" "}
+                  <button
+                    onClick={() => {
+                      setShowFilterPop(true);
+                      setFilteringBy("repair_desc_en");
+                      setFilterData(Array.from(repairDescEnSet));
+                    }}
+                  >
+                    <FaFilter />
+                  </button>
+                </th>
+                <th>Unit</th>
+                <th>Quantity</th>
+                <th dir="ltr">Cost {"($)"}</th>
+              </>
+            ) : (
+              <>
+                <th>
+                  نوع الصيانة{" "}
+                  <button
+                    onClick={() => {
+                      setShowFilterPop(true);
+                      setFilteringBy("repair_type_ar");
+                      setFilterData(Array.from(repairTypeArSet));
+                    }}
+                  >
+                    <FaFilter />
+                  </button>
+                </th>
+                <th>
+                  وصف الصيانة{" "}
+                  <button
+                    onClick={() => {
+                      setShowFilterPop(true);
+                      setFilteringBy("repair_desc_ar");
+                      setFilterData(Array.from(repairDescArSet));
+                    }}
+                  >
+                    <FaFilter />
+                  </button>
+                </th>
+                <th>الوحدة</th>
+                <th>الكمية</th>
+                <th>التكلفة {"($)"}</th>
+              </>
+            )}
+            <th className="hide-when-print">اجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data &&
+            data.map((term, idx) => (
               <tr key={idx}>
                 {language === "english" ? (
                   <>
@@ -204,35 +200,35 @@ export default function Terms() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-        {showFilterPopup && (
-          <FilterPopup
-            data={filterData ?? []}
-            selectedFilterValue={selectedFilterValue}
-            setSelectedFilterValue={setSelectedFilterValue}
-            onExit={() => setShowFilterPop(false)}
-            onFilter={(e) => {
-              e.preventDefault();
-              if (!allTerms || !filteringBy || !selectedFilterValue) return;
+        </tbody>
+      </table>
+      {showFilterPopup && (
+        <FilterPopup
+          data={filterData ?? []}
+          selectedFilterValue={selectedFilterValue}
+          setSelectedFilterValue={setSelectedFilterValue}
+          onExit={() => setShowFilterPop(false)}
+          onFilter={(e) => {
+            e.preventDefault();
+            if (!allTerms || !filteringBy || !selectedFilterValue) return;
 
-              const filtered = allTerms.filter(
-                (d) =>
-                  String(d[filteringBy as keyof Term]) ===
-                  String(selectedFilterValue),
-              );
+            const filtered = allTerms.filter(
+              (d) =>
+                String(d[filteringBy as keyof Term]) ===
+                String(selectedFilterValue),
+            );
 
-              setData(filtered);
-              setShowFilterPop(false);
-              setSelectedFilterValue("");
-            }}
-            // just reset data to all logs
-            onResetFilter={() => {
-              setShowFilterPop(false);
-              setData(allTerms);
-            }}
-          />
-        )}
-      </div>
-    );
+            setData(filtered);
+            setShowFilterPop(false);
+            setSelectedFilterValue("");
+          }}
+          // just reset data to all logs
+          onResetFilter={() => {
+            setShowFilterPop(false);
+            setData(allTerms);
+          }}
+        />
+      )}
+    </div>
+  );
 }

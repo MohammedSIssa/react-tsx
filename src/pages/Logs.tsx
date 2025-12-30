@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import type { Log } from "../types/Log";
 
 import ErrorPage from "./ErrorPage";
@@ -17,18 +17,26 @@ import DeleteButton from "../components/DeleteButton";
 
 import { MdEdit } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
-// import { BsDatabaseX } from "react-icons/bs";
 
 import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
 import DateFilterPopup from "../components/DateFilterPopup";
 
+import { FaPrint } from "react-icons/fa";
+
+import { paginate, getTotalPages } from "../variables/pagination";
+
 export default function Logs() {
   const [allLogs, setAllLogs] = useState<Log[] | null>(null);
   const [data, setData] = useState<Log[] | null>(null);
+  const [shownData, setShownData] = useState<Log[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageLimit, setPageLimit] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const [showDateFilter, setShowDateFilter] = useState(false);
 
@@ -129,33 +137,58 @@ export default function Logs() {
     getLogs();
   }, []);
 
-  useEffect(() => {
-    const costs = data?.map((log: Log) => log.total_cost) ?? [];
+  useLayoutEffect(() => {
+    const costs = shownData?.map((log: Log) => log.total_cost) ?? [];
     const sum = costs.reduce(
       (accumulator: number, currentValue: number | null | undefined) =>
         accumulator + (currentValue ?? 0),
       0,
     );
     setTotalCost(sum);
-  }, [data]);
+  }, [shownData]);
+
+  useEffect(() => {
+    // pagination starts here.
+    if (data !== null) {
+      const show = paginate(data, pageNumber, pageLimit);
+      const pages = getTotalPages(data, pageLimit);
+      setTotalPages(pages);
+      setShownData(show);
+    }
+  }, [pageNumber, data, pageLimit]);
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [pageLimit]);
+
+  const handleShowAllData = () => {
+    setShownData(allLogs);
+    setPageLimit(999);
+  };
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
-  // if (data?.length === 0)
-  //   return (
-  //     <div className="flex h-[300px] items-center justify-center text-black/20">
-  //       <BsDatabaseX size={100} />
-  //     </div>
-  //   );
   if (data)
     return (
       <div>
-        <div className="hide-when-print flex items-center justify-center p-2">
-          <ExportToExcel onClick={() => exportLogs(data ?? [])} />
+        <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
+          سجل الصيانة
         </div>
-        <table dir={language === "english" ? "ltr" : "rtl"}>
-          <thead>
-            <tr className="[&_button]:absolute [&_button]:-top-2 [&_button]:left-0 [&_button]:cursor-pointer [&_button]:bg-white [&_th]:relative [&_th]:font-bold">
+        <div className="hide-when-print flex items-center justify-center gap-2 pb-2">
+          <ExportToExcel onClick={() => exportLogs(data ?? [])} />
+          <button
+            className="flex cursor-pointer items-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition-all duration-200 hover:bg-blue-600"
+            onClick={() => window.print()}
+          >
+            <FaPrint size={24} />
+          </button>
+        </div>
+        <table
+          dir={language === "english" ? "ltr" : "rtl"}
+          className="mb-25 **:text-xs"
+        >
+          <thead className="bg-slate-800 font-bold text-white">
+            <tr className="[&_button]:absolute [&_button]:top-1 [&_button]:left-1 [&_button]:cursor-pointer [&_button]:bg-slate-900 [&_button]:text-slate-300 [&_th]:relative [&_th]:border-r [&_th]:border-l [&_th]:border-slate-400 [&_th]:font-bold">
               {language === "english" ? (
                 <>
                   <th>
@@ -166,7 +199,7 @@ export default function Logs() {
                         setFilterData(Array.from(datesSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -178,7 +211,7 @@ export default function Logs() {
                         setFilterData(Array.from(orderNumbersSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -190,7 +223,7 @@ export default function Logs() {
                         setFilterData(Array.from(vehicleCodeSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -202,7 +235,7 @@ export default function Logs() {
                         setFilterData(Array.from(vehicleTypeEnSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -214,7 +247,7 @@ export default function Logs() {
                         setFilterData(Array.from(licenceNumberSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -226,7 +259,7 @@ export default function Logs() {
                         setFilterData(Array.from(modelEnSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -238,7 +271,7 @@ export default function Logs() {
                         setFilterData(Array.from(termNumSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -250,7 +283,7 @@ export default function Logs() {
                         setFilterData(Array.from(repairDescEnSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>Statement</th>
@@ -270,7 +303,7 @@ export default function Logs() {
                         setFilterData(Array.from(datesSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -282,7 +315,7 @@ export default function Logs() {
                         setFilterData(Array.from(orderNumbersSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -294,7 +327,7 @@ export default function Logs() {
                         setFilterData(Array.from(vehicleCodeSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -306,7 +339,7 @@ export default function Logs() {
                         setFilterData(Array.from(vehicleTypeArSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -318,7 +351,7 @@ export default function Logs() {
                         setFilterData(Array.from(licenceNumberSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -330,7 +363,7 @@ export default function Logs() {
                         setFilterData(Array.from(modelArSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -342,7 +375,7 @@ export default function Logs() {
                         setFilterData(Array.from(termNumSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>
@@ -354,7 +387,7 @@ export default function Logs() {
                         setFilterData(Array.from(repairDescArSet));
                       }}
                     >
-                      <FaFilter />
+                      <FaFilter size={10} />
                     </button>
                   </th>
                   <th>البيان</th>
@@ -368,8 +401,8 @@ export default function Logs() {
               <th className="hide-when-print">اجراءات</th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((log, idx) => (
+          <tbody className="[&_tr]:odd:bg-neutral-100 [&_tr]:even:bg-neutral-200 [&_tr]:last-of-type:bg-white">
+            {shownData?.map((log, idx) => (
               <tr key={idx}>
                 <td>{formatDateDDMMYYYY(log.log_date ?? "")}</td>
                 {language === "english" ? (
@@ -407,7 +440,7 @@ export default function Logs() {
                 <td className="hide-when-print flex gap-1 border-0 p-1">
                   <NavLink
                     to={`/edit/log`}
-                    className="rounded border-0 bg-blue-500 p-2 px-3 text-white"
+                    className="rounded border-0 bg-slate-700 p-2 px-3 text-white"
                     state={{ log }}
                   >
                     <MdEdit size={16} />
@@ -509,6 +542,45 @@ export default function Logs() {
             }}
           />
         )}
+
+        <div className="hide-when-print fixed bottom-0 mt-4 flex h-20 w-full items-center justify-between bg-slate-800 p-2 px-10">
+          <div>
+            {totalPages > 1 &&
+              Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPageNumber(i + 1)}
+                  className={`h-fit cursor-pointer border-r border-l border-slate-800 px-3 py-1 shadow-sm transition-colors duration-200 ${
+                    pageNumber === i + 1
+                      ? "bg-slate-600 font-semibold text-white"
+                      : "bg-gray-100 text-gray-800"
+                  } `}
+                >
+                  {i + 1}
+                </button>
+              ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-white">عدد السطور: </label>
+            <select
+              value={pageLimit}
+              onChange={(e) => setPageLimit(Number(e.target.value))}
+              className="w-30 bg-slate-700 p-2 text-white focus:outline-0 [&_option]:bg-slate-700"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+            </select>
+            <button
+              onClick={handleShowAllData}
+              className="cursor-pointer rounded bg-slate-600 p-1 px-4 text-white hover:bg-slate-700"
+            >
+              إظهار جميع البيانات
+            </button>
+          </div>
+        </div>
       </div>
     );
 }

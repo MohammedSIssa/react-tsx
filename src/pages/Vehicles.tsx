@@ -15,7 +15,6 @@ import useLanguage from "../hooks/useLanguage";
 
 import FilterPopup from "../components/FilterPopup";
 import { exportVehicles } from "../variables/excel-export";
-// import { BsDatabaseX } from "react-icons/bs";
 
 export default function Vehicles() {
   const [allVehicles, setAllVehicles] = useState<Vehicle[] | null>(null);
@@ -94,16 +93,14 @@ export default function Vehicles() {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorPage />;
-  // if (data?.length === 0)
-  //   return (
-  //     <div className="flex h-[300px] items-center justify-center text-black/20">
-  //       <BsDatabaseX size={100} />
-  //     </div>
-  //   );
+
   if (data)
     return (
       <div>
-        <div className="hide-when-print flex items-center justify-center p-2">
+        <div className="hide-when-print p-5 pb-0 text-2xl font-bold">
+          بيانات الآليات
+        </div>
+        <div className="hide-when-print flex items-center justify-center pb-2">
           <ExportToExcel onClick={() => exportVehicles(data ?? [])} />
         </div>
         <table>

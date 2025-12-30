@@ -211,15 +211,3 @@ export default function CreateVehicle() {
     </div>
   );
 }
-
-// {
-// vehicle_code,
-// licence_number,
-// vehicle_type_en,
-// vehicle_type_ar,
-// vehicle_model_ar,
-// vehicle_state,
-// vehicle_dept,
-// vehicle_model_en,
-// notes,
-// }

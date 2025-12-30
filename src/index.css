@@ -23,7 +23,7 @@ table {
 
 td:not(.border-0),
 th {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 2px 5px;
 }
 
@@ -34,6 +34,15 @@ td {
 @media print {
   .hide-when-print {
     display: none;
+  }
+
+  td:not(.border-0),
+  th {
+    border: 1px solid black;
+  }
+  * {
+    color: black;
+    font-weight: 400;
   }
   th button,
   td button {

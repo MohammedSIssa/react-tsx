@@ -14,25 +14,26 @@ const EditTerm = lazy(() => import("./pages/EditTerm"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Settings = lazy(() => import("./pages/SettingsPage"));
 
-import NavBar from "./components/NavBar";
+import AppLayout from "./layouts/AppLayout";
 
 import LanguageProvider from "./context/LanguageProvider";
 
 export default function App() {
   return (
     <LanguageProvider>
-      <NavBar />
       <Routes>
-        <Route path="/" index element={<Logs />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/create/vehicle" element={<CreateVehicle />} />
-        <Route path="/edit/vehicle" element={<EditVehicle />} />
-        <Route path="/vehicles" element={<Vehicles />} />
-        <Route path="/create/term" element={<CreateTerm />} />
-        <Route path="/edit/term" element={<EditTerm />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/create/log" element={<CreateLog />} />
-        <Route path="/edit/log" element={<EditLog />} />
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Logs />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="create/vehicle" element={<CreateVehicle />} />
+          <Route path="edit/vehicle" element={<EditVehicle />} />
+          <Route path="vehicles" element={<Vehicles />} />
+          <Route path="create/term" element={<CreateTerm />} />
+          <Route path="edit/term" element={<EditTerm />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="create/log" element={<CreateLog />} />
+          <Route path="edit/log" element={<EditLog />} />
+        </Route>
       </Routes>
     </LanguageProvider>
   );
