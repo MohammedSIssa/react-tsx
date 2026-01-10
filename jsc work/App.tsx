@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router";
 import { lazy } from "react";
+import "./custom.css";
 
 import Logs from "./pages/Logs";
 const CreateLog = lazy(() => import("./pages/CreateLog"));
