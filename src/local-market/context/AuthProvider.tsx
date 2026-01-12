@@ -3,34 +3,37 @@ import type { User } from "../types";
 import { AuthContext } from "./AuthContext";
 import API from "../api/api";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 interface Props {
   children: React.ReactNode;
 }
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (user && user?.email) navigate("/dashboard");
+  //   else {
+  //     navigate("/auth");
+  //   }
+  // }, [user, navigate]);
 
   useEffect(() => {
-    if (user && user?.email) navigate("/dashboard");
-    else {
-      navigate("/auth");
-    }
-  }, [user, navigate]);
-
-  useEffect(() => {
-    const checkAuth = async () => {
+    const restoreSession = async () => {
       try {
-        const res = await API.get("/auth/me"); // sends cookie automatically
+        const res = await API.get("/auth/me");
         setUser(res.data.user);
       } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkAuth();
+    restoreSession();
   }, []);
 
   // Login function
@@ -38,7 +41,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     try {
       const res = await API.post("/auth/login", { email, password });
       setUser(res.data.user);
-      // Cookie is automatically set by the browser
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       throw new Error(err.response?.data?.error || "Login failed");
@@ -48,7 +50,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      await API.post("/auth/logout"); // optional backend route to clear cookie
+      await API.post("/auth/logout");
     } catch (err) {
       console.error(err);
     } finally {
@@ -56,18 +58,17 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  // Check if user is already logged in (optional)
-  const checkAuth = async () => {
-    try {
-      const res = await API.get("/auth/me"); // optional backend endpoint
-      setUser(res.data.user);
-    } catch {
-      setUser(null);
-    }
-  };
+  // const checkAuth = async () => {
+  //   try {
+  //     const res = await API.get("/auth/me"); // optional backend endpoint
+  //     setUser(res.data.user);
+  //   } catch {
+  //     setUser(null);
+  //   }
+  // };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, checkAuth }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

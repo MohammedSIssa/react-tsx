@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 
 interface Props {
@@ -8,10 +8,18 @@ interface Props {
 
 const ProtectedRoute: React.FC<Props> = ({ children }) => {
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  if (!auth || !auth.user) {
-    // User not logged in, redirect to auth page
-    return <Navigate to="/auth" replace />;
+  if (auth?.loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Checking authentication...</p>
+      </div>
+    );
+  }
+
+  if (!auth?.user) {
+    navigate("/auth");
   }
 
   return <>{children}</>;

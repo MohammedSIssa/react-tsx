@@ -5,7 +5,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
-  checkAuth: () => Promise<void>;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

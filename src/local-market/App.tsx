@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import ItemPage from "./pages/ItemPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthProvider";
+import Trades from "./pages/Trades";
 
 function App() {
   return (
@@ -22,6 +23,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/trades"
+            element={
+              <ProtectedRoute>
+                <Trades />
               </ProtectedRoute>
             }
           />
